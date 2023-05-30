@@ -1,47 +1,52 @@
 import Express from "express";
+import mongoose from "mongoose";
+import userModel from "../models/user.model";
 
-export const createUser = (req: Express.Request, res: Express.Response) => {
-  return res.status(201).json({ msg: "usuario creado" });
-};
-
-export const login = (req: Express.Request, res: Express.Response) => {
-  const DB = [
-    {
-      username: "Michael",
-      password: "compaq",
-    },
-    {
-      username: "Michael",
-      password: "compaq",
-    },
-    {
-      username: "Stephany",
-      password: "compaq",
-    },
-    {
-      username: "Carlos",
-      password: "compaq",
-    },
-    {
-      username: "Aida",
-      password: "compaq",
-    },
-  ];
-
-  // { usernaname: "Usuario", password: "CLave"}
+export const getUsers = async (req: Express.Request, res: Express.Response) => {
   try {
-    let { username, password } = req.body;
-    if (username && password) {
-      for (let user of DB) {
-        if (username === user.username) {
-          if (password === user.password) {
-            return res.status(200).json({msg: "Login succeded!"});
-          }
-        }
-      }
-    }
-    return res.status(401).json({ msg: "Credentials are rejected!" });
+
+    const result = await userModel.find() // los usuarios existentes
+    res.status(200).json({result})
+
   } catch (error) {
-    console.log(error);
+    console.log(error)
+    return res.status(400).json({msg: "ha ocurrido un error", error})
   }
-};
+}
+
+export const createUser = async (req: Express.Request, res: Express.Response) => {
+
+  try {
+    
+    let newUser = req.body
+    const userCreated = await userModel.create(newUser)
+
+    if(userCreated) return res.status(201).json({msg: "Uusario Creado"})
+    throw {msg: "Error al crear el usuario"}
+
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({msg: "ha ocurrido un error", error})
+  }
+
+}
+
+export const updateUser = async (req: Express.Request, res: Express.Response) => {
+  // {
+  //   _id:
+  //   dataToUpdate: {} 
+  // }
+
+  try {
+
+    let {dataToUpdate, _id } = req.body
+    const updatedData = await userModel.findByIdAndUpdate(_id, dataToUpdate)
+
+    return res.status(200).json({msg: "Usuario actualizado"})
+
+  } catch (error) {
+    console.log(error)
+    return res.status(400).json({msg: "ha ocurrido un error", error})
+  }
+
+}

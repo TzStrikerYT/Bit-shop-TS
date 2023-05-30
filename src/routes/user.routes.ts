@@ -6,6 +6,8 @@ const router = Router()
 
 // crear un usuario
 router.post("/create", controllers.User.createUser);
-router.post("/login", controllers.User.login)
+router.get("/getAll", controllers.User.getUsers)
+router.put("/update", controllers.User.updateUser)
+router.delete("/", () => {})
 
 export default router
