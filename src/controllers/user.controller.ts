@@ -48,5 +48,16 @@ export const updateUser = async (req: Express.Request, res: Express.Response) =>
     console.log(error)
     return res.status(400).json({msg: "ha ocurrido un error", error})
   }
+}
 
+export const deleteUser = async (req: Express.Request, res: Express.Response) => {
+  try {
+
+    let  {_id} =  req.params
+
+    const deleted = await userModel.findByIdAndDelete(_id)
+    return res.status(200).json({msg: "Usuario ELiminado"})
+  } catch (error) {
+    return res.status(400).json({msg: "ha ocurrido un error", error})
+  }
 }

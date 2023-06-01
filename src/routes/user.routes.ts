@@ -8,6 +8,6 @@ const router = Router()
 router.post("/create", controllers.User.createUser);
 router.get("/getAll", controllers.User.getUsers)
 router.put("/update", controllers.User.updateUser)
-router.delete("/", () => {})
+router.delete("/delete/:_id", controllers.User.deleteUser)
 
 export default router
