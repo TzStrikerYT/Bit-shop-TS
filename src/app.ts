@@ -24,6 +24,7 @@ app.use(Express.json());
 
 // Global de las rutas a utilizar en el api
 app.use("/api", apiRoutes)
+app.use(Express.static('uploads'))
 
 // ejecuccion del api
 app.listen(port, () => console.log(`api is running in port ${port}`));
